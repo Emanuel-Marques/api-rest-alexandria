@@ -5,7 +5,7 @@ import com.betrybe.alexandria.entity.Publisher;
 /**
  * The type Publisher dto.
  */
-public record PublisherDto(String name, String address) {
+public record PublisherDto(Long id, String name, String address) {
 
   /**
    * From entity publisher dto.
@@ -15,8 +15,9 @@ public record PublisherDto(String name, String address) {
    */
   public static PublisherDto fromEntity(Publisher publisher) {
     return new PublisherDto(
+            publisher.getId(),
             publisher.getName(),
-            publisher.getName()
+            publisher.getAddress()
     );
   }
 }

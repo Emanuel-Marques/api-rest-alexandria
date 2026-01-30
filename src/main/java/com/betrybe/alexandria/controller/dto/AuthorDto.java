@@ -5,7 +5,7 @@ import com.betrybe.alexandria.entity.Author;
 /**
  * The type Author dto.
  */
-public record AuthorDto(String name, String nationality) {
+public record AuthorDto(Long id, String name, String nationality) {
   /**
    * From entity author dto.
    *
@@ -14,6 +14,7 @@ public record AuthorDto(String name, String nationality) {
    */
   public static AuthorDto fromEntity(Author author) {
     return new  AuthorDto(
+            author.getId(),
             author.getName(),
             author.getNationality()
     );
