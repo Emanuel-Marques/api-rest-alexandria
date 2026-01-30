@@ -3,10 +3,9 @@ package com.betrybe.alexandria.services;
 import com.betrybe.alexandria.entity.Book;
 import com.betrybe.alexandria.repository.BookRepository;
 import com.betrybe.alexandria.services.exception.BookNotFoundException;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * The type Book service.
@@ -55,6 +54,14 @@ public class BookService {
     return bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
   }
 
+  /**
+   * Update book.
+   *
+   * @param id   the id
+   * @param book the book
+   * @return the book
+   * @throws BookNotFoundException the book not found exception
+   */
   public Book update(Long id, Book book) throws BookNotFoundException {
     Book bookFromDb = findById(id);
 
@@ -64,6 +71,13 @@ public class BookService {
     return bookRepository.save(bookFromDb);
   }
 
+  /**
+   * Delete book.
+   *
+   * @param id the id
+   * @return the book
+   * @throws BookNotFoundException the book not found exception
+   */
   public Book delete(Long id) throws BookNotFoundException {
     // Pegar a entidade antes de apagar para retornar
     Book book = findById(id);
