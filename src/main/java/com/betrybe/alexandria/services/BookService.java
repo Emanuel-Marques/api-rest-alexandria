@@ -13,6 +13,9 @@ import java.util.List;
 
 import com.betrybe.alexandria.services.exception.PublisherNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -45,8 +48,10 @@ public class BookService {
    *
    * @return the list
    */
-  public List<Book> findAll() {
-    return bookRepository.findAll();
+  public List<Book> findAll(int pageNumber, int pageSize) {
+    Pageable pageable = PageRequest.of(pageNumber, pageSize);
+    Page<Book> page = bookRepository.findAll(pageable);
+    return page.toList();
   }
 
   /**

@@ -12,6 +12,7 @@ import com.betrybe.alexandria.services.exception.BookNotFoundException;
 import java.util.List;
 
 import com.betrybe.alexandria.services.exception.PublisherNotFoundException;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -55,8 +56,11 @@ public class BookController {
    * @return the all books
    */
   @GetMapping
-  public List<BookDto> getAllBooks() {
-    List<Book> allBooks = this.bookService.findAll();
+  public List<BookDto> getAllBooks(
+          @RequestParam(required = false, defaultValue = "0") int pageNumber,
+          @RequestParam(required = false, defaultValue = "10") int pageSize
+  ) {
+    List<Book> allBooks = this.bookService.findAll(pageNumber, pageSize);
     return allBooks.stream()
             .map(BookDto::fromEntity)
             .toList();
