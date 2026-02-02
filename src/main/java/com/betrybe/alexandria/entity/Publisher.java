@@ -1,10 +1,8 @@
 package com.betrybe.alexandria.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 
 /**
@@ -19,6 +17,9 @@ public class Publisher {
 
   private String name;
   private String address;
+
+  @OneToMany(mappedBy = "publisher")
+  private List<Book> books;
 
   /**
    * Instantiates a new Publisher.
@@ -89,4 +90,13 @@ public class Publisher {
   public void setAddress(String address) {
     this.address = address;
   }
+
+  public List<Book> getBooks() {
+    return books;
+  }
+
+  public void setBooks(List<Book> books) {
+    this.books = books;
+  }
+
 }
