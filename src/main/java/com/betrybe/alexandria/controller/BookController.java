@@ -1,12 +1,16 @@
 package com.betrybe.alexandria.controller;
 
 import com.betrybe.alexandria.controller.dto.BookCreationDto;
+import com.betrybe.alexandria.controller.dto.BookDetailCreationDto;
+import com.betrybe.alexandria.controller.dto.BookDetailDto;
 import com.betrybe.alexandria.controller.dto.BookDto;
 import com.betrybe.alexandria.entity.Book;
 import com.betrybe.alexandria.services.BookService;
+import com.betrybe.alexandria.services.exception.BookDetailNotFoundException;
 import com.betrybe.alexandria.services.exception.BookNotFoundException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -98,5 +102,69 @@ public class BookController {
     );
   }
 
+  /**
+   * Create book detail book detail dto.
+   *
+   * @param bookId                the book id
+   * @param bookDetailCreationDto the book detail creation dto
+   * @return the book detail dto
+   * @throws BookNotFoundException the book not found exception
+   */
+  @PostMapping("/{bookId}/detail")
+  @ResponseStatus(HttpStatus.CREATED)
+  public BookDetailDto createBookDetail(@PathVariable Long bookId,
+                                        @RequestBody BookDetailCreationDto bookDetailCreationDto)
+      throws BookNotFoundException {
+    return BookDetailDto.fromEntity(
+            bookService.createBookDetail(bookId, bookDetailCreationDto.toEntity())
+    );
+  }
 
+  /**
+   * Gets book detail by id.
+   *
+   * @param bookId the book id
+   * @return the book detail by id
+   * @throws BookNotFoundException       the book not found exception
+   * @throws BookDetailNotFoundException the book detail not found exception
+   */
+  @GetMapping("/{bookId}/detail")
+  public BookDetailDto getBookDetailById(@PathVariable Long bookId)
+          throws BookNotFoundException, BookDetailNotFoundException {
+    return BookDetailDto.fromEntity(bookService.getBookDetail(bookId));
+  }
+
+  /**
+   * Update book detail book detail dto.
+   *
+   * @param bookId                the book id
+   * @param bookDetailCreationDto the book detail creation dto
+   * @return the book detail dto
+   * @throws BookNotFoundException       the book not found exception
+   * @throws BookDetailNotFoundException the book detail not found exception
+   */
+  @PutMapping("/{bookId}/detail")
+  public BookDetailDto updateBookDetail(@PathVariable Long bookId,
+                                        @RequestBody BookDetailCreationDto bookDetailCreationDto)
+      throws BookNotFoundException, BookDetailNotFoundException {
+    return BookDetailDto.fromEntity(
+           bookService.updateBookDetail(bookId, bookDetailCreationDto.toEntity())
+    );
+  }
+
+  /**
+   * Remove book detail book detail dto.
+   *
+   * @param bookId the book id
+   * @return the book detail dto
+   * @throws BookNotFoundException       the book not found exception
+   * @throws BookDetailNotFoundException the book detail not found exception
+   */
+  @DeleteMapping("/{bookId}/detail")
+  public BookDetailDto removeBookDetail(@PathVariable Long bookId)
+          throws BookNotFoundException, BookDetailNotFoundException {
+    return BookDetailDto.fromEntity(
+            bookService.deleteBookDetail(bookId)
+    );
+  }
 }
