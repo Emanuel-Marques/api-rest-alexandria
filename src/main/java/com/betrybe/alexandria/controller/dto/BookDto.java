@@ -1,11 +1,20 @@
 package com.betrybe.alexandria.controller.dto;
 
+import com.betrybe.alexandria.entity.Author;
 import com.betrybe.alexandria.entity.Book;
+
+import java.util.List;
 
 /**
  * The type Book dto.
  */
-public record BookDto(Long id, String title, String genre, PublisherDto publisher) {
+public record BookDto(
+        Long id,
+        String title,
+        String genre,
+        PublisherDto publisher,
+        List<AuthorDto> authors
+) {
   /**
    * From entity book dto.
    *
@@ -19,7 +28,10 @@ public record BookDto(Long id, String title, String genre, PublisherDto publishe
             book.getId(),
             book.getTitle(),
             book.getGenre(),
-            publisherDto
+            publisherDto,
+            book.getAuthors().stream()
+                    .map(AuthorDto::fromEntity)
+                    .toList()
     );
   }
 

@@ -2,6 +2,9 @@ package com.betrybe.alexandria.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * The type Book.
@@ -22,6 +25,15 @@ public class Book {
   @ManyToOne
   @JoinColumn(name = "publisher_id")
   private Publisher publisher;
+
+  @ManyToMany
+  @JoinTable(
+          name = "authors_books", // nome da tabela intermediária para o relacionamento N:N
+          joinColumns = @JoinColumn(name = "book_id"), // qual a chave estrangeira que vai refenciar a entidade que estamos
+          inverseJoinColumns = @JoinColumn(name = "author_id") // Chave estrangeira da outra  entidade qye fará parte do relacioanmento
+  )
+  private List<Author> authors = new ArrayList<>();
+
 
   /**
    * Instantiates a new Book.
@@ -118,5 +130,13 @@ public class Book {
 
   public void setPublisher(Publisher publisher) {
     this.publisher = publisher;
+  }
+
+  public List<Author> getAuthors() {
+    return authors;
+  }
+
+  public void setAuthors(List<Author> authors) {
+    this.authors = authors;
   }
 }

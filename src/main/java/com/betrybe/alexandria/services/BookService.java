@@ -1,10 +1,12 @@
 package com.betrybe.alexandria.services;
 
+import com.betrybe.alexandria.entity.Author;
 import com.betrybe.alexandria.entity.Book;
 import com.betrybe.alexandria.entity.BookDetail;
 import com.betrybe.alexandria.entity.Publisher;
 import com.betrybe.alexandria.repository.BookDetailRepository;
 import com.betrybe.alexandria.repository.BookRepository;
+import com.betrybe.alexandria.services.exception.AuthorNotFoundException;
 import com.betrybe.alexandria.services.exception.BookDetailNotFoundException;
 import com.betrybe.alexandria.services.exception.BookNotFoundException;
 import java.util.List;
@@ -21,6 +23,7 @@ public class BookService {
   private final BookRepository bookRepository;
   private final BookDetailRepository bookDetailRepository;
   private final PublisherService publisherService;
+  private final AuthorService authorService;
 
   /**
    * Instantiates a new Book service.
@@ -30,10 +33,11 @@ public class BookService {
    * @param publisherService     the publisher service
    */
   @Autowired
-  public BookService(BookRepository bookRepository, BookDetailRepository bookDetailRepository, PublisherService publisherService) {
+  public BookService(BookRepository bookRepository, BookDetailRepository bookDetailRepository, PublisherService publisherService, AuthorService authorService) {
     this.bookRepository = bookRepository;
     this.bookDetailRepository = bookDetailRepository;
     this.publisherService = publisherService;
+    this.authorService = authorService;
   }
 
   /**
@@ -212,6 +216,26 @@ public class BookService {
     Book book = findById(bookId);
 
     book.setPublisher(null);
+
+    return bookRepository.save(book);
+  }
+
+  public Book addBookAuthor(Long bookId, Long authorId)
+          throws BookNotFoundException, AuthorNotFoundException {
+    Book book = findById(bookId);
+    Author author = authorService.findById(authorId);
+
+    book.getAuthors().add(author);
+
+    return bookRepository.save(book);
+  }
+
+  public Book removeBookAuthor(Long bookId, Long authorId)
+          throws BookNotFoundException, AuthorNotFoundException {
+    Book book = findById(bookId);
+    Author author = authorService.findById(authorId);
+
+    book.getAuthors().remove(author);
 
     return bookRepository.save(book);
   }
